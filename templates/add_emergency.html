@@ -1,0 +1,134 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+<!-- ***** Header Area End ***** -->
+
+<div class="page-heading header-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="breadcrumb"><a href="http://127.0.0.1:8000/index">Home</a> / Add Emergency</span>
+        <h3>Report Emergency</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-page section">
+  <div class="container">
+    <div class="row">
+      <center>
+      <div class="col-lg-8">
+        <form id="contact-form" action="{% url 'add_emergency_post' %}" method="post">
+          {% csrf_token %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <div class="row">
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="emergency_type">Emergency Type</label>
+                <select name="emergency_type" id="emergency_type" class="form-control" required>
+                  <option value="">Select Emergency Type</option>
+                  <option value="medical">Medical Emergency</option>
+                  <option value="accident">Accident</option>
+                  <option value="lost">Lost Person</option>
+                  <option value="fire">Fire</option>
+                  <option value="stampede">Stampede</option>
+                  <option value="other">Other</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="location">Location</label>
+                <input type="text" name="location" id="location" placeholder="Enter exact location..." required>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="contact_number">Contact Number</label>
+                <input type="tel" name="contact_number" id="contact_number" placeholder="Enter contact number..." required>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="4" placeholder="Describe the emergency situation..." required></textarea>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="medical_help_needed">
+                  <input type="checkbox" name="medical_help_needed" id="medical_help_needed">
+                  Medical Help Needed
+                </label>
+              </fieldset>
+            </div>
+            <div class="col-lg-12" id="medical_details_div" style="display: none;">
+              <fieldset>
+                <label for="medical_details">Medical Details</label>
+                <textarea name="medical_details" id="medical_details" rows="3" placeholder="Describe medical requirements..."></textarea>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <button type="submit" id="form-submit" class="orange-button">Report Emergency</button>
+              </fieldset>
+            </div>
+          </div>
+        </form>
+      </div>
+      </center>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
+
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Additional Scripts -->
+<script src="{% static 'assets/js/custom.js' %}"></script>
+<script src="{% static 'assets/js/owl.js' %}"></script>
+<script src="{% static 'assets/js/slick.js' %}"></script>
+<script src="{% static 'assets/js/isotope.js' %}"></script>
+<script src="{% static 'assets/js/accordions.js' %}"></script>
+
+<script>
+  // Show/hide medical details based on checkbox
+  document.getElementById('medical_help_needed').addEventListener('change', function() {
+    var medicalDetailsDiv = document.getElementById('medical_details_div');
+    if (this.checked) {
+      medicalDetailsDiv.style.display = 'block';
+      document.getElementById('medical_details').required = true;
+    } else {
+      medicalDetailsDiv.style.display = 'none';
+      document.getElementById('medical_details').required = false;
+    }
+  });
+</script>
+
+<script language="text/Javascript">
+  cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+  function clearField(t) { //declaring the array outside of the
+    if (!cleared[t.id]) { // you could use true and false, but that's more typing
+      cleared[t.id] = 1; // you could use true and false, but that's more typing
+      t.value = ''; // with more chance of typos
+      t.style.color = '#fff';
+    }
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,133 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+<!-- ***** Header Area End ***** -->
+
+<div class="page-heading header-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="breadcrumb"><a href="http://127.0.0.1:8000/index">Home</a> / Book Slot</span>
+        <h3>Book Your Slot</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-page section">
+  <div class="container">
+    <div class="row">
+
+      {% if existing_booking %}
+      <div class="col-lg-12" style="margin-bottom: 30px;">
+        <div class="alert alert-info">
+          <h4>Your Current Booking</h4>
+          <p><strong>Date:</strong> {{ existing_booking.slot.date }}</p>
+          <p><strong>Route:</strong> {{ existing_booking.slot.route }}</p>
+          <p><strong>Name on Aadhar:</strong> {{ existing_booking.aadhar_name }}</p>
+          <p><strong>Aadhar Number:</strong> {{ existing_booking.aadhar_number }}</p>
+          <p><strong>Date of Birth:</strong> {{ existing_booking.date_of_birth }}</p>
+          <p><strong>Booked on:</strong> {{ existing_booking.booking_date|date:"M d, Y H:i" }}</p>
+          <p class="text-muted">You can only have one active booking at a time.</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not existing_booking %}
+      <div class="col-lg-12" style="margin-bottom: 30px;">
+        <h4>Select Date</h4>
+        {% if available_dates %}
+          <div class="row">
+            {% for date in available_dates %}
+            <div class="col-md-3 col-sm-6" style="margin-bottom: 10px;">
+              <a href="?date={{ date|date:'Y-m-d' }}" class="btn btn-outline-primary btn-block">
+                {{ date|date:"M d, Y" }}
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="alert alert-warning">
+            <p>No dates are currently available for booking.</p>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if selected_date %}
+      <div class="col-lg-12" style="margin-bottom: 20px;">
+        <div class="alert alert-secondary">
+          <strong>Selected Date:</strong> {{ selected_date|date:"M d, Y" }}
+          <a href="{% url 'book_slot' %}" class="btn btn-sm btn-outline-secondary float-right">Change Date</a>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <h4>Available Routes for {{ selected_date|date:"M d, Y" }}</h4>
+        {% if available_routes %}
+          <div class="row">
+            {% for route in available_routes %}
+            <div class="col-md-6 col-lg-4" style="margin-bottom: 20px;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ route.route }}</h5>
+                  <p class="card-text">
+                    <strong>Total Slots:</strong> {{ route.number_of_slots }}<br>
+                    <strong>Available:</strong> {{ route.available_slots }}
+                  </p>
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="slot_id" value="{{ route.id }}">
+                    <div class="form-group">
+                      <label for="aadhar_name_{{ route.id }}">Name on Aadhar Card</label>
+                      <input type="text" class="form-control" name="aadhar_name" id="aadhar_name_{{ route.id }}" 
+                             placeholder="Enter name as on Aadhar card" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="date_of_birth_{{ route.id }}">Date of Birth</label>
+                      <input type="date" class="form-control" name="date_of_birth" id="date_of_birth_{{ route.id }}" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="aadhar_{{ route.id }}">Aadhar Number</label>
+                      <input type="text" class="form-control" name="aadhar_number" id="aadhar_{{ route.id }}" 
+                             placeholder="Enter 12-digit Aadhar number" maxlength="12" pattern="\d{12}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Book This Route</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="alert alert-warning">
+            <p>No routes are available for the selected date.</p>
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% else %}
+      <div class="col-lg-12">
+        <div class="alert alert-warning">
+          <p>You already have an active booking. You cannot book another slot until your current booking is completed.</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if messages %}
+      <div class="col-lg-12" style="margin-top: 20px;">
+        {% for message in messages %}
+          <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}
