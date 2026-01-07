@@ -1,0 +1,110 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+<!-- ***** Header Area End ***** -->
+
+<div class="page-heading header-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="breadcrumb"><a href="http://127.0.0.1:8000/index">Home</a> / Add Weather</span>
+        <h3>Add Weather Details</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-page section">
+  <div class="container">
+    <div class="row">
+      <center>
+      <div class="col-lg-6">
+        <form id="contact-form" action="{% url 'add_weather' %}" method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" required>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="low_temperature">Low Temperature (°C)</label>
+                <input type="number" step="0.01" name="low_temperature" id="low_temperature" placeholder="Enter Low Temperature..." required>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="high_temperature">High Temperature (°C)</label>
+                <input type="number" step="0.01" name="high_temperature" id="high_temperature" placeholder="Enter High Temperature..." required>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="windspeed">Wind Speed (km/h)</label>
+                <input type="number" step="0.01" name="windspeed" id="windspeed" placeholder="Enter Wind Speed..." required>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <label for="description">Weather Description</label>
+                <textarea name="description" id="description" placeholder="Enter Weather Description..." rows="4" required></textarea>
+              </fieldset>
+            </div>
+            <div class="col-lg-12">
+              <fieldset>
+                <button type="submit" id="form-submit" class="orange-button">Add Weather</button>
+              </fieldset>
+            </div>
+          </div>
+        </form>
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <p style="color: green;">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        </center>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 50px;">
+        <h4>Weather Records</h4>
+        {% if weather_records %}
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Low Temp (°C)</th>
+                <th>High Temp (°C)</th>
+                <th>Wind Speed (km/h)</th>
+                <th>Description</th>
+                <th>Added On</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for weather in weather_records %}
+                <tr>
+                  <td>{{ weather.date }}</td>
+                  <td>{{ weather.low_temperature }}</td>
+                  <td>{{ weather.high_temperature }}</td>
+                  <td>{{ weather.windspeed }}</td>
+                  <td>{{ weather.description }}</td>
+                  <td>{{ weather.timestamp|date:"M d, Y H:i" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No weather records added yet.</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

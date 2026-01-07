@@ -1,0 +1,110 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+<!-- ***** Header Area End ***** -->
+
+<div class="page-heading header-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="breadcrumb"><a href="http://127.0.0.1:8000/index">Home</a> / View Weather</span>
+        <h3>Weather Forecast</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-page section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% if weather_data %}
+          <div class="row">
+            {% for weather in weather_data %}
+              <div class="col-lg-4 col-md-6">
+                <div class="card mb-4" style="border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+                    <h5 class="card-title mb-0">
+                      <i class="fas fa-calendar-alt"></i> {{ weather.date|date:"F d, Y" }}
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="weather-info">
+                      <div class="temperature mb-3">
+                        <h6><i class="fas fa-thermometer-half"></i> Temperature</h6>
+                        <p class="mb-1">
+                          <strong>Low:</strong> {{ weather.low_temperature }}°C
+                        </p>
+                        <p class="mb-1">
+                          <strong>High:</strong> {{ weather.high_temperature }}°C
+                        </p>
+                      </div>
+
+                      <div class="windspeed mb-3">
+                        <h6><i class="fas fa-wind"></i> Wind Speed</h6>
+                        <p>{{ weather.windspeed }} km/h</p>
+                      </div>
+
+                      <div class="description">
+                        <h6><i class="fas fa-cloud"></i> Conditions</h6>
+                        <p>{{ weather.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer text-muted" style="background-color: #f8f9fa; border-top: 1px solid #ddd;">
+                    <small>Added on {{ weather.timestamp|date:"M d, Y H:i" }}</small>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center">
+            <div class="alert alert-info" role="alert">
+              <h4 class="alert-heading"><i class="fas fa-info-circle"></i> No Weather Data Available</h4>
+              <p>No weather forecasts have been added yet. Please check back later.</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
+
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Additional Scripts -->
+<script src="{% static 'assets/js/custom.js' %}"></script>
+<script src="{% static 'assets/js/owl.js' %}"></script>
+<script src="{% static 'assets/js/slick.js' %}"></script>
+<script src="{% static 'assets/js/isotope.js' %}"></script>
+<script src="{% static 'assets/js/accordions.js' %}"></script>
+
+<script language="text/Javascript">
+  cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+  function clearField(t) { //declaring the array outside of the
+    if (!cleared[t.id]) { // function makes it static and global
+      cleared[t.id] = 1; // you could use true and false, but that's more typing
+      t.value = ''; // with more chance of typos
+      t.style.color = '#fff';
+    }
+  }
+</script>
+
+{% endblock %}

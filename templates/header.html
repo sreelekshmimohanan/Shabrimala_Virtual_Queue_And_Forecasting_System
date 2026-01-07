@@ -11,12 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-      <title>Shabarimal Virtual Queae</title>
+      <title>Sabarimala APP</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-
+x
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/templatemo-villa-agency.css' %}">
@@ -38,7 +38,7 @@ https://templatemo.com/tm-591-villa-agency
  
   <!-- ***** Preloader End ***** -->
 
-  <div class="sub-header">
+  <!-- <div class="sub-header">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-8">
@@ -57,7 +57,7 @@ https://templatemo.com/tm-591-villa-agency
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- ***** Header Area Start ***** -->
   <header class="header-area header-sticky">
@@ -66,20 +66,38 @@ https://templatemo.com/tm-591-villa-agency
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="http://127.0.0.1:8000/index" class="logo">
-                        <h1>House</h1>
-                    </a>
+                  
+                        <h1>SABARIMALA APP</h1>
+                    
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-{% if request.session.logint %}
+                      {% if request.session.logint %}
                       <li><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
-                      <li><a href="http://127.0.0.1:8000/viewuser">User</a></li>
+                      <!--<li><a href="http://127.0.0.1:8000/viewuser">Users</a></li>-->
+                      <li><a href="http://127.0.0.1:8000/add_slot">Slots</a></li>
+                      <li><a href="http://127.0.0.1:8000/view_booking">Bookings</a></li>
+                      <li><a href="http://127.0.0.1:8000/add_police">Police</a></li>
+                      <li><a href="http://127.0.0.1:8000/add_medical_staff">Med staff</a></li>
+                      <li><a href="http://127.0.0.1:8000/add_weather">Weather</a></li>
+                      <li><a href="http://127.0.0.1:8000/view_emergency">Emergency</a></li>
                       <li><a href="http://127.0.0.1:8000/logout">Logout</a></li>
+                      <li><a ></a></li>
+                      {% elif request.session.police_id %}
+                      <li><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
+                      <li><a href="http://127.0.0.1:8000/add_emergency" class="active">Add Emergency</a></li>
+                      <li><a href="http://127.0.0.1:8000/view_response" class="active">View Response</a></li>
+                      <li><a href="http://127.0.0.1:8000/logout" class="active">Logout</a></li>
+                      {% elif request.session.medical_staff_id %}
+                      <li><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
+                      <li><a href="http://127.0.0.1:8000/view_emergency" class="active">View Emergency</a></li>
+                      <li><a href="http://127.0.0.1:8000/logout" class="active">Logout</a></li>
                       {% elif request.session.uid %}
 
                        <li><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
-                        <li><a href="http://127.0.0.1:8000/logout">Logout</a></li>
+                       <li><a href="http://127.0.0.1:8000/book_slot" class="active">Book Slot</a></li>
+                       <li><a href="http://127.0.0.1:8000/view_weather" class="active">View Weather</a></li>
+                        <li><a href="http://127.0.0.1:8000/logout" class="active">Logout</a></li>
                         {% else %}
 
                        <li><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
